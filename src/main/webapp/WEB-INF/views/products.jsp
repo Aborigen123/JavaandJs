@@ -45,8 +45,8 @@
 </div>
 
 
-<script src="${rootUrl}/resources/js/axios.min.js"></script>
-<script src="${rootUrl}/resources/js/vue.min.js"></script>
+<script src="/resources/js/axios.min.js"></script>
+<script src="/resources/js/vue.min.js"></script>
 
 <script>
 new Vue({
@@ -55,37 +55,39 @@ new Vue({
 		carEntitys: [],
 		serverUrl: "http://localhost:8080/api/v1"
 	},
-	methods: {}
-	getCarEntitys: function(){
-		var self = this;
+	methods: {
 		
-		axios.get(this.serverUrl + "/products")//method get a date
-		.then(function(response){//return znachenya
-			self.carEntitys = response.data;
+		getCarEntitys: function(){
+			var self = this;
+			
+			axios.get(this.serverUrl + "/products")//method get a date
+			.then(function(response){//return znachenya
+				console.log(response);
+				self.carEntitys = response.data;
+			})
+			.catch(function(err){
+				console.log(err);
+			})
+		},
+		
+		buy: function(carEntity){
+			axios.get(this.serverUrl + "/buy?carEntityId=" + carEntity.id)
+			.then(function(response){
+			alert("You bought" + carEntity.name + ":-)");
+			carEntity.inStock--;
 		})
 		.catch(function(err){
 			console.log(err);
 		})
+		}
 	},
 	
-	buy: function(carEntity){
-		axios.get(this.serverUrl + "/buy?carEntityId=" + carEntity.id)
-		.then(function(response){
-		alert("You bought" + carEntity.name + ":-)");
-		carEntity.inStock--;
-	})
-	.catch(function(err){
-		console.log(err);
-	})
-	
-	},
-	
-	mouted(){
+	mounted(){
 		this.getCarEntitys();
 		
 	}
 	
-})
+});
 
 
 </script>
